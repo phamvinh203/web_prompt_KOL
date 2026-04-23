@@ -1,57 +1,53 @@
 import { useState } from 'react';
 
 const KOL_STYLES = [
-  { id: 'auto',      label: '✦ AI Tự chọn',       sub: 'Phân tích & quyết định' },
-  { id: 'luxury',    label: 'Luxury Fashion',       sub: 'Haute couture, Editorial' },
-  { id: 'street',    label: 'Street Style',         sub: 'Urban, Raw, Authentic' },
-  { id: 'kbeauty',   label: 'K-Beauty',             sub: 'Dewy, Soft, Natural' },
-  { id: 'editorial', label: 'Editorial',            sub: 'Artistic, Bold, Magazine' },
-  { id: 'sporty',    label: 'Sporty & Active',      sub: 'Dynamic, Athletic' },
-  { id: 'vintage',   label: 'Vintage Retro',        sub: 'Film grain, 70s–90s' },
+  { id: 'auto',      icon: '✦', label: 'AI Tự chọn',    sub: 'Gemini phân tích' },
+  { id: 'luxury',    icon: '💎', label: 'Luxury',        sub: 'Haute couture' },
+  { id: 'street',    icon: '🏙', label: 'Street',        sub: 'Urban, Raw' },
+  { id: 'kbeauty',   icon: '🌸', label: 'K-Beauty',      sub: 'Soft, Natural' },
+  { id: 'editorial', icon: '📸', label: 'Editorial',     sub: 'Magazine' },
+  { id: 'sporty',    icon: '⚡', label: 'Sporty',        sub: 'Dynamic' },
+  { id: 'vintage',   icon: '🎞', label: 'Vintage',       sub: 'Film grain' },
 ];
 
 const MOODS = [
-  { id: 'auto',      label: '✦ AI Tự chọn',         sub: 'Phân tích & quyết định' },
-  { id: 'cinematic', label: 'Cinematic',             sub: 'Anamorphic, Deep shadows' },
-  { id: 'dreamy',    label: 'Soft & Dreamy',         sub: 'Bokeh, Ethereal, Glow' },
-  { id: 'vibrant',   label: 'Vibrant',               sub: 'High energy, Bold colors' },
-  { id: 'minimal',   label: 'Clean Minimal',         sub: 'White space, Stark light' },
-  { id: 'moody',     label: 'Dark & Moody',          sub: 'Low-key, Rich darks' },
+  { id: 'auto',       icon: '✦', label: 'AI Tự chọn',   sub: 'Gemini phân tích' },
+  { id: 'cinematic',  icon: '🎬', label: 'Cinematic',    sub: 'Anamorphic' },
+  { id: 'dreamy',     icon: '☁️', label: 'Dreamy',       sub: 'Soft bokeh' },
+  { id: 'vibrant',    icon: '🌈', label: 'Vibrant',      sub: 'High energy' },
+  { id: 'minimal',    icon: '◻',  label: 'Minimal',      sub: 'Clean & stark' },
+  { id: 'moody',      icon: '🌑', label: 'Moody',        sub: 'Dark & rich' },
 ];
 
 const SETTINGS = [
-  { id: 'auto',         label: '✦ AI Tự chọn',       sub: 'Phân tích & quyết định' },
-  { id: 'studio',       label: 'Studio White',        sub: 'Seamless, Controlled' },
-  { id: 'golden_hour',  label: 'Golden Hour',         sub: 'Sunset, Warm backlight' },
-  { id: 'urban',        label: 'Urban Street',        sub: 'City, Architecture' },
-  { id: 'nature',       label: 'Nature & Garden',     sub: 'Greenery, Organic' },
-  { id: 'night_neon',   label: 'Night Neon',          sub: 'City night, Neon glow' },
+  { id: 'auto',        icon: '✦', label: 'AI Tự chọn',  sub: 'Gemini phân tích' },
+  { id: 'studio',      icon: '🏳', label: 'Studio',      sub: 'White seamless' },
+  { id: 'golden_hour', icon: '🌅', label: 'Golden Hour', sub: 'Sunset warm' },
+  { id: 'urban',       icon: '🌆', label: 'Urban',       sub: 'City street' },
+  { id: 'nature',      icon: '🌿', label: 'Nature',      sub: 'Greenery' },
+  { id: 'night_neon',  icon: '🌃', label: 'Night Neon',  sub: 'Neon glow' },
 ];
 
-function OptionGroup({ label, options, value, onChange }) {
+function OptionRow({ label, options, value, onChange }) {
   return (
-    <div>
-      <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--text-3)' }}>{label}</p>
-      <div className="flex flex-wrap gap-2">
+    <div style={{ marginBottom: 20 }}>
+      <p style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-3)', marginBottom: 10 }}>{label}</p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
         {options.map(opt => {
           const active = value === opt.id;
           return (
             <button
               key={opt.id}
               onClick={() => onChange(opt.id)}
-              className="px-3 py-2 rounded-xl text-left transition-all duration-150 border"
-              style={active ? {
-                background: 'rgba(232,168,71,0.12)',
-                borderColor: 'rgba(232,168,71,0.35)',
-                color: 'var(--gold)',
-              } : {
-                background: 'var(--bg-surface)',
-                borderColor: 'var(--border)',
-                color: 'var(--text-2)',
-              }}
+              className={`option-btn${active ? ' active' : ''}`}
+              style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', textAlign: 'left', width: '100%' }}
             >
-              <div className="text-xs font-semibold whitespace-nowrap">{opt.label}</div>
-              <div className="text-xs opacity-60 whitespace-nowrap">{opt.sub}</div>
+              <span style={{ fontSize: 14, width: 20, textAlign: 'center', flexShrink: 0 }}>{opt.icon}</span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 12, fontWeight: 600, lineHeight: 1.3 }}>{opt.label}</div>
+                <div style={{ fontSize: 11, opacity: 0.5, lineHeight: 1.3 }}>{opt.sub}</div>
+              </div>
+              {active && <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', flexShrink: 0 }} />}
             </button>
           );
         })}
@@ -61,43 +57,23 @@ function OptionGroup({ label, options, value, onChange }) {
 }
 
 export default function StyleSelector({ value, onChange }) {
-  const [open, setOpen] = useState(true);
+  const hasCustom = value.kol_style !== 'auto' || value.mood !== 'auto' || value.setting !== 'auto';
 
-  const hasCustom =
-    value.kol_style !== 'auto' || value.mood !== 'auto' || value.setting !== 'auto';
+  function reset() { onChange({ kol_style: 'auto', mood: 'auto', setting: 'auto' }); }
 
   return (
-    <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)', background: 'var(--bg-card)' }}>
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between px-5 py-4"
-        style={{ background: 'transparent' }}
-      >
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-semibold" style={{ color: 'var(--text-1)' }}>Phong cách & Style</span>
-          {hasCustom && (
-            <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(232,168,71,0.12)', color: 'var(--gold)' }}>
-              Đã tuỳ chỉnh
-            </span>
-          )}
-        </div>
-        <span className="text-xs transition-transform duration-200" style={{ color: 'var(--text-3)', display: 'inline-block', transform: open ? 'rotate(180deg)' : 'rotate(0)' }}>▼</span>
-      </button>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-1)' }}>Style & Phong cách</span>
+        {hasCustom && (
+          <button onClick={reset} style={{ fontSize: 11, color: 'var(--text-3)', textDecoration: 'underline' }}>Reset</button>
+        )}
+      </div>
 
-      {open && (
-        <div className="px-5 pb-5 space-y-5 slide-up" style={{ borderTop: '1px solid var(--border)' }}>
-          <div className="pt-4">
-            <OptionGroup label="KOL Style" options={KOL_STYLES} value={value.kol_style} onChange={v => onChange({ ...value, kol_style: v })} />
-          </div>
-          <OptionGroup label="Visual Mood" options={MOODS} value={value.mood} onChange={v => onChange({ ...value, mood: v })} />
-          <OptionGroup label="Bối cảnh / Setting" options={SETTINGS} value={value.setting} onChange={v => onChange({ ...value, setting: v })} />
-          {hasCustom && (
-            <button onClick={() => onChange({ kol_style: 'auto', mood: 'auto', setting: 'auto' })} className="text-xs" style={{ color: 'var(--text-3)' }}>
-              ↩ Reset về AI tự chọn
-            </button>
-          )}
-        </div>
-      )}
+      <OptionRow label="KOL Style"   options={KOL_STYLES} value={value.kol_style} onChange={v => onChange({ ...value, kol_style: v })} />
+      <OptionRow label="Visual Mood" options={MOODS}      value={value.mood}      onChange={v => onChange({ ...value, mood: v })} />
+      <OptionRow label="Bối cảnh"    options={SETTINGS}   value={value.setting}   onChange={v => onChange({ ...value, setting: v })} />
     </div>
   );
 }

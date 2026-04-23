@@ -37,6 +37,9 @@ router.post('/', upload.fields([{ name: 'kol_image', maxCount: 1 }, { name: 'pro
     await ImageHistory.create({
       kol_filename: kolFile.originalname,
       product_filename: productFile.originalname,
+      kol_style: styleOptions.kol_style,
+      mood: styleOptions.mood,
+      setting: styleOptions.setting,
       pose_prompt: result.pose_prompt,
       motion_prompt: result.motion_prompt,
       continuation_prompt: result.continuation_prompt,

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function CopyBtn({ text }) {
+function CopyBtn({ text, label }) {
   const [copied, setCopied] = useState(false);
   async function handle() {
     await navigator.clipboard.writeText(text);
@@ -8,23 +8,22 @@ function CopyBtn({ text }) {
     setTimeout(() => setCopied(false), 2000);
   }
   return (
-    <button
-      onClick={handle}
-      className="text-xs px-2.5 py-1 rounded-lg transition-all duration-150"
-      style={copied
-        ? { background: 'rgba(78,205,196,0.15)', color: 'var(--cyan)', border: '1px solid rgba(78,205,196,0.3)' }
-        : { background: 'var(--bg-surface)', color: 'var(--text-3)', border: '1px solid var(--border)' }
-      }
-    >
-      {copied ? '✓ Copied' : 'Copy'}
+    <button onClick={handle} style={{
+      fontSize: 11, padding: '3px 10px', borderRadius: 7, cursor: 'pointer', fontWeight: 500,
+      background: copied ? 'var(--teal-dim)' : 'var(--bg-surface)',
+      color: copied ? 'var(--teal)' : 'var(--text-3)',
+      border: `1px solid ${copied ? 'rgba(62,207,190,0.25)' : 'var(--border)'}`,
+      transition: 'all 150ms',
+    }}>
+      {copied ? '✓' : label}
     </button>
   );
 }
 
-const ACCENT = {
-  pose:         { dot: '#e8a847', label: 'POSE' },
-  motion:       { dot: '#f06a7e', label: 'MOTION' },
-  continuation: { dot: '#4ecdc4', label: 'CONTINUATION' },
+const TYPE_META = {
+  pose:         { label: 'POSE PROMPT',         dot: 'var(--accent)', tint: 'var(--pose-tint)' },
+  motion:       { label: 'MOTION PROMPT',       dot: 'var(--amber)',  tint: 'var(--motion-tint)' },
+  continuation: { label: 'CONTINUATION PROMPT', dot: 'var(--teal)',   tint: 'var(--cont-tint)' },
 };
 
 export default function PromptCard({ type = 'pose', promptData }) {
@@ -32,41 +31,46 @@ export default function PromptCard({ type = 'pose', promptData }) {
     ? { en: promptData, vi: promptData }
     : (promptData || {});
 
-  const accent = ACCENT[type] || ACCENT.pose;
+  const meta = TYPE_META[type] || TYPE_META.pose;
 
   return (
-    <div className="rounded-2xl overflow-hidden slide-up" style={{ border: '1px solid var(--border)', background: 'var(--bg-card)' }}>
-      {/* Header */}
-      <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
-        <div className="flex items-center gap-2.5">
-          <span className="w-2 h-2 rounded-full" style={{ background: accent.dot, boxShadow: `0 0 6px ${accent.dot}` }} />
-          <span className="text-xs font-bold tracking-widest" style={{ color: accent.dot }}>{accent.label}</span>
+    <div style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--bg-card)' }}>
+      {/* Header bar */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '10px 16px',
+        background: meta.tint,
+        borderBottom: '1px solid var(--border)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ width: 8, height: 8, borderRadius: '50%', background: meta.dot, display: 'inline-block', boxShadow: `0 0 8px ${meta.dot}` }} />
+          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', color: meta.dot }}>{meta.label}</span>
         </div>
-        <div className="flex gap-2">
-          <span className="text-xs" style={{ color: 'var(--text-3)' }}>Copy:</span>
-          <CopyBtn text={en} />
-          <CopyBtn text={vi} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ fontSize: 10, color: 'var(--text-3)', marginRight: 2 }}>Copy:</span>
+          <CopyBtn text={en} label="EN" />
+          <CopyBtn text={vi} label="VI" />
         </div>
       </div>
 
-      {/* Bilingual content */}
-      <div className="grid grid-cols-2 divide-x" style={{ borderColor: 'var(--border)' }}>
+      {/* Body — 2 columns */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
         {/* English */}
-        <div className="p-4 space-y-2">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-xs font-semibold px-2 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-3)' }}>EN</span>
-            <span className="text-xs" style={{ color: 'var(--text-3)' }}>English prompt</span>
+        <div style={{ padding: '14px 16px', borderRight: '1px solid var(--border)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+            <span style={{ fontSize: 10, fontWeight: 700, padding: '1px 7px', borderRadius: 5, background: 'rgba(255,255,255,0.06)', color: 'var(--text-2)' }}>EN</span>
+            <span style={{ fontSize: 10, color: 'var(--text-3)' }}>English — dùng cho GROK</span>
           </div>
-          <p className="text-xs leading-relaxed font-mono-prompt" style={{ color: 'var(--text-1)', lineHeight: '1.7' }}>{en}</p>
+          <p style={{ fontSize: 12, lineHeight: 1.75, color: 'var(--text-1)', fontFamily: 'IBM Plex Mono, monospace', margin: 0 }}>{en}</p>
         </div>
 
         {/* Vietnamese */}
-        <div className="p-4 space-y-2" style={{ borderLeft: '1px solid var(--border)' }}>
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-xs font-semibold px-2 py-0.5 rounded" style={{ background: 'rgba(232,168,71,0.08)', color: 'var(--gold-dim)' }}>VI</span>
-            <span className="text-xs" style={{ color: 'var(--text-3)' }}>Tiếng Việt</span>
+        <div style={{ padding: '14px 16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+            <span style={{ fontSize: 10, fontWeight: 700, padding: '1px 7px', borderRadius: 5, background: 'var(--amber-dim)', color: 'var(--amber)' }}>VI</span>
+            <span style={{ fontSize: 10, color: 'var(--text-3)' }}>Tiếng Việt — tham khảo</span>
           </div>
-          <p className="text-xs leading-relaxed" style={{ color: 'var(--text-2)', lineHeight: '1.7' }}>{vi}</p>
+          <p style={{ fontSize: 12, lineHeight: 1.75, color: 'var(--text-2)', margin: 0 }}>{vi}</p>
         </div>
       </div>
     </div>

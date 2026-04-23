@@ -3,53 +3,53 @@ import ImagePage from './pages/ImagePage.jsx';
 import VideoPage from './pages/VideoPage.jsx';
 import HistoryPanel from './components/HistoryPanel.jsx';
 
-const tabs = [
-  { id: 'image', label: 'KOL × Sản phẩm', sub: 'Ảnh → 3 Prompts' },
-  { id: 'video', label: 'Phân tích Video', sub: 'Tách đoạn → Motion' },
+const TABS = [
+  { id: 'image', label: 'KOL × Sản phẩm', hint: 'Ảnh → 3 Prompts' },
+  { id: 'video', label: 'Phân tích Video',  hint: 'Tách đoạn → Motion' },
 ];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('image');
+  const [tab, setTab] = useState('image');
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg-base)' }}>
-      {/* Header */}
-      <header className="border-b" style={{ borderColor: 'var(--border)', background: 'rgba(17,17,25,0.8)', backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 50 }}>
-        <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm font-bold" style={{ background: 'var(--gold)', color: '#09090f' }}>K</div>
-            <span className="font-semibold text-sm tracking-tight" style={{ color: 'var(--text-1)' }}>KOL Prompt Studio</span>
-            <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: 'rgba(232,168,71,0.12)', color: 'var(--gold)' }}>GROK AI</span>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)' }}>
+      {/* Sticky header */}
+      <header style={{
+        position: 'sticky', top: 0, zIndex: 50,
+        borderBottom: '1px solid var(--border-soft)',
+        background: 'rgba(12,12,16,0.85)', backdropFilter: 'blur(16px)',
+      }}>
+        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '0 24px', height: 52, display: 'flex', alignItems: 'center', gap: 16 }}>
+          {/* Logo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 28, height: 28, borderRadius: 8, background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#fff' }}>K</div>
+            <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-1)', letterSpacing: '-0.01em' }}>KOL Prompt Studio</span>
+            <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: 'var(--accent-dim)', color: 'var(--accent)', border: '1px solid rgba(124,106,245,0.25)' }}>GROK AI</span>
           </div>
-          <span className="text-xs" style={{ color: 'var(--text-3)' }}>Powered by Gemini 2.5 Flash</span>
+
+          {/* Tabs */}
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: 4, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 10, padding: 3 }}>
+            {TABS.map(t => (
+              <button key={t.id} onClick={() => setTab(t.id)} style={{
+                padding: '5px 14px', borderRadius: 8, fontSize: 13, fontWeight: 500,
+                background: tab === t.id ? 'var(--bg-raised)' : 'transparent',
+                color: tab === t.id ? 'var(--text-1)' : 'var(--text-3)',
+                border: tab === t.id ? '1px solid var(--border)' : '1px solid transparent',
+                transition: 'all 150ms',
+              }}>
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          <span style={{ fontSize: 11, color: 'var(--text-3)' }}>Gemini 2.5 Flash</span>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-8">
-        {/* Tab switcher */}
-        <div className="flex gap-1 p-1 rounded-2xl mb-8" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className="flex-1 py-3 px-4 rounded-xl transition-all duration-200 text-left"
-              style={activeTab === tab.id
-                ? { background: 'var(--bg-hover)', borderColor: 'var(--border-active)' }
-                : { background: 'transparent' }
-              }
-            >
-              <div className="text-sm font-semibold" style={{ color: activeTab === tab.id ? 'var(--text-1)' : 'var(--text-3)' }}>{tab.label}</div>
-              <div className="text-xs mt-0.5" style={{ color: activeTab === tab.id ? 'var(--text-2)' : 'var(--text-3)' }}>{tab.sub}</div>
-            </button>
-          ))}
+      <main style={{ maxWidth: 1080, margin: '0 auto', padding: '32px 24px' }}>
+        <div className="fade-in" key={tab}>
+          {tab === 'image' ? <ImagePage /> : <VideoPage />}
         </div>
-
-        {/* Page content */}
-        <div className="fade-in" key={activeTab}>
-          {activeTab === 'image' ? <ImagePage /> : <VideoPage />}
-        </div>
-
-        {/* History */}
         <HistoryPanel />
       </main>
     </div>

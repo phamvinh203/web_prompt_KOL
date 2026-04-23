@@ -95,7 +95,34 @@ const SCENARIOS = {
     promptGuide: `
 - pose_prompt: KOL sitting or standing, holding the unopened product package with excitement. Product box/bag clearly visible. Anticipation expression, leaning forward slightly. Bright, clean lighting showing product packaging details.
 - motion_prompt: Opens with KOL excitedly opening the product box/bag, pulling out the item with delight. She holds the product up to camera for a close-up reveal. Then she playfully lifts the packaging/bag to completely cover the camera lens — screen goes dark for 1-2 seconds (blackout transition). Pacing: energetic and fun, TikTok unboxing energy.
-- continuation_prompt: Camera uncovers to reveal KOL already wearing/using the product, fully styled and confident. She does a slow spin or poses to show the full look. Then direct eye contact with camera, big smile, points to the product on herself. High energy, satisfying reveal moment. Optional: text overlay space at top for product name.`,
+- continuation_prompt: Camera uncovers to reveal KOL already wearing/using the product, fully styled and confident. She does a slow spin or poses to show the full look. Then direct eye contact with camera, big smile, points to the product on herself. High energy, satisfying reveal moment.`,
+  },
+
+  before_after: {
+    label: 'Transition Before/After',
+    description: 'KOL shows herself before (casual/plain look) then transitions smoothly into wearing the product — satisfying transformation reveal.',
+    promptGuide: `
+- pose_prompt: Split-concept frame. Left side: KOL in casual plain outfit, relaxed and natural. Right side (or implied): KOL fully styled with the product, confident and polished. Clean center composition for transition effect. Neutral background to maximize contrast between before/after.
+- motion_prompt: Opens on KOL in casual look — no makeup or simple outfit, candid and relaxed. She faces the camera, then does a swipe gesture or quick spin. Camera whip-pan or jump-cut transition effect. Pacing: slow opening (2s) → fast swipe/spin transition (0.5s). The transition is the hero moment — make it feel satisfying and crisp.
+- continuation_prompt: Cut reveals KOL fully transformed wearing the product — same position, totally different energy. She poses confidently, shows product from multiple angles with slow camera orbit. Ends with direct eye contact and a confident smile. Side-by-side comparison moment optional. Closing: product name text overlay space.`,
+  },
+
+  street_cafe: {
+    label: 'Đi đường / Cafe Lookbook',
+    description: 'Outdoor lifestyle lookbook — KOL walks on the street or sits at a cafe wearing the product. Natural, candid, real-life aesthetic.',
+    promptGuide: `
+- pose_prompt: KOL outdoors — standing on a tree-lined sidewalk, sitting at a cafe window, or walking through a market. Product worn naturally as everyday outfit. Candid, relaxed expression — not posed, feels like a stolen lifestyle shot. Background shows real environment: pedestrians, cafe interior, street signage.
+- motion_prompt: Opens with KOL walking toward the camera down a street or through a cafe entrance, product visible in motion. Camera follows at medium distance — slight handheld wobble for authenticity. She glances at something off-frame, laughs naturally, adjusts her bag or hair. Pacing: slow and natural, like a fashion documentary behind-the-scenes.
+- continuation_prompt: Camera settles as KOL sits at a cafe table or leans against a wall. She looks down at her coffee/phone briefly then back up — natural lifestyle moment. Slow pan around her showing the full product look from different angles. Ends with her looking directly at camera with a natural smile, product clearly featured.`,
+  },
+
+  body_review: {
+    label: 'Review dáng người thật',
+    description: 'KOL gives an honest, authentic review of how the product fits on a real body — discussing size, form, comfort, and look from all angles.',
+    promptGuide: `
+- pose_prompt: KOL standing in good lighting, wearing the product on her natural body. Confident, relaxed posture — not overly posed. Full-body or 3/4 shot so product fit is fully visible. Honest, warm expression — feels like talking to a friend. Clean or simple background so the product fit is the main focus.
+- motion_prompt: Opens with KOL showing the product from the front, speaking directly to camera (as if doing a review). She turns to the side to show the silhouette and fit. Then turns to the back. She pinches/pulls the fabric to show texture and stretch. Points to specific details: waistband, hem length, sleeve fit. Pacing: relaxed, conversational — like a TikTok try-on haul.
+- continuation_prompt: KOL demonstrates movement comfort — sits down, bends, stretches slightly to show how the product moves with the body. Stands back up and does a slow 360° spin for full view. Ends facing camera, points to her favorite feature of the product and gives a thumbs up or nods approvingly. Authentic, trustworthy, relatable closing.`,
   },
 };
 

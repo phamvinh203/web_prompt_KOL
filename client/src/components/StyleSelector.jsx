@@ -29,8 +29,11 @@ const SETTINGS = [
 ];
 
 const SCENARIOS = [
-  { id: 'mirror_selfie',   icon: '🪞', label: 'Khoe đồ trước gương',  sub: 'Cầm điện thoại tự quay, outfit reveal trước gương' },
-  { id: 'unboxing_reveal',  icon: '📦', label: 'Khui đồ & mặc thử',   sub: 'Mở hộp → che camera → bất ngờ reveal mặc lên người' },
+  { id: 'mirror_selfie',    icon: '🪞', label: 'Khoe đồ trước gương',       sub: 'Cầm điện thoại tự quay, outfit reveal trước gương' },
+  { id: 'unboxing_reveal',  icon: '📦', label: 'Khui đồ & mặc thử',         sub: 'Mở hộp → che camera → bất ngờ reveal mặc lên người' },
+  { id: 'before_after',     icon: '✨', label: 'Transition Before/After',    sub: 'Biến hình từ bình thường → có đồ, hiệu ứng chuyển cảnh mượt' },
+  { id: 'street_cafe',      icon: '☕', label: 'Đi đường / Cafe Lookbook',   sub: 'Lifestyle ngoài đường, ngồi cafe, đi dạo phong cách tự nhiên' },
+  { id: 'body_review',      icon: '👗', label: 'Review dáng người thật',     sub: 'Thử đồ trên dáng thật, nhận xét form, size, độ vừa vặn' },
 ];
 
 function OptionRow({ label, options, value, onChange }) {

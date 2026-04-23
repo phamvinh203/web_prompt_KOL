@@ -51,6 +51,7 @@ export function useImagePrompt() {
       form.append('kol_style',     styleOptions.kol_style || 'auto');
       form.append('mood',          styleOptions.mood      || 'auto');
       form.append('setting',       styleOptions.setting   || 'auto');
+      form.append('scenario',      styleOptions.scenario  || 'auto');
 
       const { data } = await api.post('/image-prompt', form);
 

@@ -4,7 +4,7 @@ import StyleSelector from '../components/StyleSelector.jsx';
 import PromptCard from '../components/PromptCard.jsx';
 import { useImagePrompt } from '../hooks/useImagePrompt.js';
 
-const DEFAULT_STYLE = { kol_style: 'auto', mood: 'auto', setting: 'auto' };
+const DEFAULT_STYLE = { kol_style: 'auto', mood: 'auto', setting: 'auto', scenario: 'auto' };
 
 function ProgressBar({ progress, stepLabel }) {
   const done = progress === 100;

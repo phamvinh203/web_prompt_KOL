@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 const KOL_STYLES = [
   { id: 'auto',      icon: '✦', label: 'AI Tự chọn',    sub: 'Gemini phân tích tự động' },
   { id: 'luxury',    icon: '💎', label: 'Sang trọng',    sub: 'Thời trang cao cấp, Haute couture' },
@@ -26,6 +24,12 @@ const SETTINGS = [
   { id: 'urban',       icon: '🌆', label: 'Đô thị',      sub: 'Đường phố, kiến trúc thành phố' },
   { id: 'nature',      icon: '🌿', label: 'Thiên nhiên',  sub: 'Cây xanh, ánh sáng tự nhiên' },
   { id: 'night_neon',  icon: '🌃', label: 'Đêm Neon',    sub: 'Đèn neon lung linh, đêm thành phố' },
+];
+
+const SCENARIOS = [
+  { id: 'auto',           icon: '✦', label: 'AI Tự chọn',       sub: 'Gemini phân tích tự động' },
+  { id: 'mirror_selfie',  icon: '🪞', label: 'Khoe đồ trước gương', sub: 'Cầm điện thoại tự quay, outfit reveal trước gương' },
+  { id: 'unboxing_reveal',icon: '📦', label: 'Khui đồ & mặc thử', sub: 'Mở hộp → che camera → bất ngờ reveal mặc lên người' },
 ];
 
 function OptionRow({ label, options, value, onChange }) {
@@ -56,10 +60,13 @@ function OptionRow({ label, options, value, onChange }) {
   );
 }
 
-export default function StyleSelector({ value, onChange }) {
-  const hasCustom = value.kol_style !== 'auto' || value.mood !== 'auto' || value.setting !== 'auto';
+const DEFAULT_VALUE = { kol_style: 'auto', mood: 'auto', setting: 'auto', scenario: 'auto' };
 
-  function reset() { onChange({ kol_style: 'auto', mood: 'auto', setting: 'auto' }); }
+export default function StyleSelector({ value, onChange }) {
+  const hasCustom = value.kol_style !== 'auto' || value.mood !== 'auto'
+    || value.setting !== 'auto' || value.scenario !== 'auto';
+
+  function reset() { onChange(DEFAULT_VALUE); }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
@@ -71,9 +78,10 @@ export default function StyleSelector({ value, onChange }) {
         )}
       </div>
 
-      <OptionRow label="Phong cách KOL" options={KOL_STYLES} value={value.kol_style} onChange={v => onChange({ ...value, kol_style: v })} />
-      <OptionRow label="Không khí"      options={MOODS}      value={value.mood}      onChange={v => onChange({ ...value, mood: v })} />
-      <OptionRow label="Bối cảnh"       options={SETTINGS}   value={value.setting}   onChange={v => onChange({ ...value, setting: v })} />
+      <OptionRow label="Kịch bản video"  options={SCENARIOS}  value={value.scenario}  onChange={v => onChange({ ...value, scenario: v })} />
+      <OptionRow label="Phong cách KOL"  options={KOL_STYLES} value={value.kol_style} onChange={v => onChange({ ...value, kol_style: v })} />
+      <OptionRow label="Không khí"       options={MOODS}      value={value.mood}      onChange={v => onChange({ ...value, mood: v })} />
+      <OptionRow label="Bối cảnh"        options={SETTINGS}   value={value.setting}   onChange={v => onChange({ ...value, setting: v })} />
     </div>
   );
 }

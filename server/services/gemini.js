@@ -2,23 +2,29 @@ import { GoogleGenAI } from '@google/genai';
 import { readFileSync } from 'fs';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-const MODEL = 'gemini-2.5-flash';
+const MODEL = 'gemma-3-27b-it';
 
 function buildImageSystemPrompt(styleOptions = {}) {
-  const { kol_style = 'auto', mood = 'auto', setting = 'auto' } = styleOptions;
+  const { kol_style = 'auto', mood = 'auto', setting = 'auto', scenario = 'auto' } = styleOptions;
 
   const styleInstructions = [
     kol_style !== 'auto' ? `KOL Style Direction: ${KOL_STYLES[kol_style]?.label || kol_style} — ${KOL_STYLES[kol_style]?.description || ''}` : 'KOL Style: Analyze the KOL image and choose the most fitting style automatically.',
     mood !== 'auto' ? `Visual Mood: ${MOODS[mood]?.label || mood} — ${MOODS[mood]?.description || ''}` : 'Visual Mood: Choose the most fitting mood based on the product and KOL.',
     setting !== 'auto' ? `Setting/Background: ${SETTINGS[setting]?.label || setting} — ${SETTINGS[setting]?.description || ''}` : 'Setting: Choose the most fitting setting automatically.',
+    scenario !== 'auto' ? `VIDEO SCENARIO (MOST IMPORTANT): ${SCENARIOS[scenario]?.label || scenario} — ${SCENARIOS[scenario]?.description || ''}` : 'Video Scenario: Choose naturally based on product type.',
   ].join('\n');
 
-  return `You are an expert AI video prompt engineer specializing in GROK AI (xAI) video generation for short-form sales content.
+  const scenarioRules = scenario !== 'auto' ? `
+SCENARIO-SPECIFIC RULES for "${SCENARIOS[scenario]?.label}":
+${SCENARIOS[scenario]?.promptGuide || ''}
+` : '';
+
+  return `You are an expert AI video prompt engineer specializing in GROK AI (xAI) video generation for short-form sales content (TikTok / Instagram Reels / YouTube Shorts style).
 
 Your task: Analyze the KOL (Key Opinion Leader / model) image and product image provided.
 Apply these style directions:
 ${styleInstructions}
-
+${scenarioRules}
 Return ONLY valid JSON — no markdown, no explanation — with exactly this structure:
 {
   "pose_prompt": {
@@ -37,9 +43,9 @@ Return ONLY valid JSON — no markdown, no explanation — with exactly this str
 
 Prompt writing rules:
 - pose_prompt (EN): KOL wearing/holding the product. Include: physical appearance, outfit, how product is worn/held, body pose, facial expression, lighting, background, camera angle, photographic style.
-- motion_prompt (EN): First half of a 15-30s short video. Include: opening shot, camera movement (pan/zoom/dolly/static), body movement, pacing (slow/normal/fast), mood atmosphere, scene transition.
-- continuation_prompt (EN): Second half continuing naturally. Include: camera movement, body movement, product close-up highlight, closing shot style.
-- Vietnamese (vi): Faithful translation preserving all technical cinematic terms. Keep proper nouns (GROK AI terms) in English within the Vietnamese text.
+- motion_prompt (EN): First half of a 15-30s short video. Follow the chosen scenario strictly. Include: opening shot, camera movement, body movement, pacing, mood atmosphere.
+- continuation_prompt (EN): Second half continuing naturally from motion_prompt. Include: camera movement, body movement, product close-up highlight, closing shot.
+- Vietnamese (vi): Faithful translation preserving all technical cinematic terms. Keep proper nouns in English.
 - All prompts: cinematic quality, specific and detailed, optimized for short-form sales video.`;
 }
 
@@ -74,7 +80,26 @@ const SETTINGS = {
   night_neon:   { label: 'Night Neon', description: 'Neon lights, city night, glowing color reflections.' },
 };
 
-export { KOL_STYLES, MOODS, SETTINGS };
+const SCENARIOS = {
+  mirror_selfie: {
+    label: 'Khoe đồ trước gương',
+    description: 'Girl holds smartphone filming herself, shows off outfit in mirror. Authentic lifestyle self-recording style.',
+    promptGuide: `
+- pose_prompt: KOL standing in front of full-length mirror, holding smartphone up to film reflection. Product (outfit/item) clearly visible on body. Natural indoor lighting, mirror reflection creates double visual. Casual, authentic, lifestyle feel.
+- motion_prompt: Opens with KOL walking toward mirror while holding phone up. She turns slowly left and right showing off the outfit from all angles. Camera (her phone) captures her reflection. Pacing: relaxed and natural, like a real try-on video. She touches/adjusts the product with her free hand.
+- continuation_prompt: KOL turns to face camera directly (breaking mirror shot), smiles and points to the product. Quick zoom-in to product detail in mirror reflection. Ends with satisfied smile, maybe a little spin. Natural, authentic TikTok-style closing.`,
+  },
+  unboxing_reveal: {
+    label: 'Khui đồ & mặc thử',
+    description: 'Girl unboxes product, briefly covers camera with packaging/cloth for surprise transition, then reveals herself wearing it.',
+    promptGuide: `
+- pose_prompt: KOL sitting or standing, holding the unopened product package with excitement. Product box/bag clearly visible. Anticipation expression, leaning forward slightly. Bright, clean lighting showing product packaging details.
+- motion_prompt: Opens with KOL excitedly opening the product box/bag, pulling out the item with delight. She holds the product up to camera for a close-up reveal. Then she playfully lifts the packaging/bag to completely cover the camera lens — screen goes dark for 1-2 seconds (blackout transition). Pacing: energetic and fun, TikTok unboxing energy.
+- continuation_prompt: Camera uncovers to reveal KOL already wearing/using the product, fully styled and confident. She does a slow spin or poses to show the full look. Then direct eye contact with camera, big smile, points to the product on herself. High energy, satisfying reveal moment. Optional: text overlay space at top for product name.`,
+  },
+};
+
+export { KOL_STYLES, MOODS, SETTINGS, SCENARIOS };
 
 function fileToInlinePart(filePath, mimeType) {
   const data = readFileSync(filePath);

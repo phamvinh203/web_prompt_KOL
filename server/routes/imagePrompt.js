@@ -29,8 +29,9 @@ router.post('/', upload.fields([{ name: 'kol_image', maxCount: 1 }, { name: 'pro
   try {
     const styleOptions = {
       kol_style: req.body.kol_style || 'auto',
-      mood: req.body.mood || 'auto',
-      setting: req.body.setting || 'auto',
+      mood:      req.body.mood      || 'auto',
+      setting:   req.body.setting   || 'auto',
+      scenario:  req.body.scenario  || 'auto',
     };
     const result = await generateImagePrompts(kolFile.path, productFile.path, styleOptions);
 

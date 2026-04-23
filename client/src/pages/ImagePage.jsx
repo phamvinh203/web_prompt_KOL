@@ -88,7 +88,7 @@ export default function ImagePage() {
           {/* Upload */}
           <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
             <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-3)', marginBottom: 16 }}>
-              Upload ảnh
+              Tải ảnh lên
             </p>
             <ImageUploader
               kolFile={kolFile}
@@ -113,7 +113,7 @@ export default function ImagePage() {
             ) : (
               <>
                 <span>✦</span>
-                Generate Prompts
+                Tạo Prompts
               </>
             )}
           </button>
@@ -141,7 +141,7 @@ export default function ImagePage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
             <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-3)' }}>
-              3 Prompts cho GROK AI
+              3 Prompt dành cho GROK AI
             </span>
             <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
           </div>
@@ -149,8 +149,8 @@ export default function ImagePage() {
           {/* Legend */}
           <div style={{ display: 'flex', gap: 20, marginBottom: 16, paddingLeft: 4 }}>
             {[
-              { color: 'var(--text-2)', label: 'EN — English prompt (dùng cho GROK)' },
-              { color: 'var(--amber)',  label: 'VI — Tiếng Việt (tham khảo)' },
+              { color: 'var(--text-2)', label: 'Tiếng Anh — dùng trực tiếp cho GROK' },
+              { color: 'var(--amber)',  label: 'Tiếng Việt — để tham khảo nội dung' },
             ].map(({ color, label }) => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: color, display: 'inline-block' }} />

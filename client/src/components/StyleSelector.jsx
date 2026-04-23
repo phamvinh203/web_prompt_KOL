@@ -1,31 +1,31 @@
 import { useState } from 'react';
 
 const KOL_STYLES = [
-  { id: 'auto',      icon: '✦', label: 'AI Tự chọn',    sub: 'Gemini phân tích' },
-  { id: 'luxury',    icon: '💎', label: 'Luxury',        sub: 'Haute couture' },
-  { id: 'street',    icon: '🏙', label: 'Street',        sub: 'Urban, Raw' },
-  { id: 'kbeauty',   icon: '🌸', label: 'K-Beauty',      sub: 'Soft, Natural' },
-  { id: 'editorial', icon: '📸', label: 'Editorial',     sub: 'Magazine' },
-  { id: 'sporty',    icon: '⚡', label: 'Sporty',        sub: 'Dynamic' },
-  { id: 'vintage',   icon: '🎞', label: 'Vintage',       sub: 'Film grain' },
+  { id: 'auto',      icon: '✦', label: 'AI Tự chọn',    sub: 'Gemini phân tích tự động' },
+  { id: 'luxury',    icon: '💎', label: 'Sang trọng',    sub: 'Thời trang cao cấp, Haute couture' },
+  { id: 'street',    icon: '🏙', label: 'Đường phố',     sub: 'Cá tính, năng động, đô thị' },
+  { id: 'kbeauty',   icon: '🌸', label: 'K-Beauty',      sub: 'Mềm mại, tự nhiên, làn da căng bóng' },
+  { id: 'editorial', icon: '📸', label: 'Tạp chí',       sub: 'Nghệ thuật, sáng tạo, ấn tượng' },
+  { id: 'sporty',    icon: '⚡', label: 'Thể thao',      sub: 'Năng động, khỏe khoắn, mạnh mẽ' },
+  { id: 'vintage',   icon: '🎞', label: 'Cổ điển',       sub: 'Hạt phim, tông ấm, hoài niệm' },
 ];
 
 const MOODS = [
-  { id: 'auto',       icon: '✦', label: 'AI Tự chọn',   sub: 'Gemini phân tích' },
-  { id: 'cinematic',  icon: '🎬', label: 'Cinematic',    sub: 'Anamorphic' },
-  { id: 'dreamy',     icon: '☁️', label: 'Dreamy',       sub: 'Soft bokeh' },
-  { id: 'vibrant',    icon: '🌈', label: 'Vibrant',      sub: 'High energy' },
-  { id: 'minimal',    icon: '◻',  label: 'Minimal',      sub: 'Clean & stark' },
-  { id: 'moody',      icon: '🌑', label: 'Moody',        sub: 'Dark & rich' },
+  { id: 'auto',       icon: '✦', label: 'AI Tự chọn',   sub: 'Gemini phân tích tự động' },
+  { id: 'cinematic',  icon: '🎬', label: 'Điện ảnh',     sub: 'Kịch tính, đậm chất phim ảnh' },
+  { id: 'dreamy',     icon: '☁️', label: 'Mơ mộng',      sub: 'Nhẹ nhàng, bokeh mềm mại' },
+  { id: 'vibrant',    icon: '🌈', label: 'Sôi động',     sub: 'Màu sắc nổi bật, tràn đầy năng lượng' },
+  { id: 'minimal',    icon: '◻',  label: 'Tối giản',     sub: 'Sạch sẽ, tinh tế, hiện đại' },
+  { id: 'moody',      icon: '🌑', label: 'Huyền bí',     sub: 'Tối tăm, sâu lắng, bí ẩn' },
 ];
 
 const SETTINGS = [
-  { id: 'auto',        icon: '✦', label: 'AI Tự chọn',  sub: 'Gemini phân tích' },
-  { id: 'studio',      icon: '🏳', label: 'Studio',      sub: 'White seamless' },
-  { id: 'golden_hour', icon: '🌅', label: 'Golden Hour', sub: 'Sunset warm' },
-  { id: 'urban',       icon: '🌆', label: 'Urban',       sub: 'City street' },
-  { id: 'nature',      icon: '🌿', label: 'Nature',      sub: 'Greenery' },
-  { id: 'night_neon',  icon: '🌃', label: 'Night Neon',  sub: 'Neon glow' },
+  { id: 'auto',        icon: '✦', label: 'AI Tự chọn',  sub: 'Gemini phân tích tự động' },
+  { id: 'studio',      icon: '🏳', label: 'Studio',      sub: 'Phông trắng, ánh sáng kiểm soát' },
+  { id: 'golden_hour', icon: '🌅', label: 'Hoàng hôn',   sub: 'Ánh nắng ấm áp cuối ngày' },
+  { id: 'urban',       icon: '🌆', label: 'Đô thị',      sub: 'Đường phố, kiến trúc thành phố' },
+  { id: 'nature',      icon: '🌿', label: 'Thiên nhiên',  sub: 'Cây xanh, ánh sáng tự nhiên' },
+  { id: 'night_neon',  icon: '🌃', label: 'Đêm Neon',    sub: 'Đèn neon lung linh, đêm thành phố' },
 ];
 
 function OptionRow({ label, options, value, onChange }) {
@@ -65,15 +65,15 @@ export default function StyleSelector({ value, onChange }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-        <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-1)' }}>Style & Phong cách</span>
+        <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-1)' }}>Tùy chỉnh phong cách</span>
         {hasCustom && (
-          <button onClick={reset} style={{ fontSize: 11, color: 'var(--text-3)', textDecoration: 'underline' }}>Reset</button>
+          <button onClick={reset} style={{ fontSize: 11, color: 'var(--text-3)', textDecoration: 'underline' }}>Đặt lại</button>
         )}
       </div>
 
-      <OptionRow label="KOL Style"   options={KOL_STYLES} value={value.kol_style} onChange={v => onChange({ ...value, kol_style: v })} />
-      <OptionRow label="Visual Mood" options={MOODS}      value={value.mood}      onChange={v => onChange({ ...value, mood: v })} />
-      <OptionRow label="Bối cảnh"    options={SETTINGS}   value={value.setting}   onChange={v => onChange({ ...value, setting: v })} />
+      <OptionRow label="Phong cách KOL" options={KOL_STYLES} value={value.kol_style} onChange={v => onChange({ ...value, kol_style: v })} />
+      <OptionRow label="Không khí"      options={MOODS}      value={value.mood}      onChange={v => onChange({ ...value, mood: v })} />
+      <OptionRow label="Bối cảnh"       options={SETTINGS}   value={value.setting}   onChange={v => onChange({ ...value, setting: v })} />
     </div>
   );
 }

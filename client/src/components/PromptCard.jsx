@@ -15,15 +15,15 @@ function CopyBtn({ text, label }) {
       border: `1px solid ${copied ? 'rgba(62,207,190,0.25)' : 'var(--border)'}`,
       transition: 'all 150ms',
     }}>
-      {copied ? '✓' : label}
+      {copied ? '✓ Đã sao chép' : label}
     </button>
   );
 }
 
 const TYPE_META = {
-  pose:         { label: 'POSE PROMPT',         dot: 'var(--accent)', tint: 'var(--pose-tint)' },
-  motion:       { label: 'MOTION PROMPT',       dot: 'var(--amber)',  tint: 'var(--motion-tint)' },
-  continuation: { label: 'CONTINUATION PROMPT', dot: 'var(--teal)',   tint: 'var(--cont-tint)' },
+  pose:         { label: 'PROMPT TƯ THẾ',       dot: 'var(--accent)', tint: 'var(--pose-tint)' },
+  motion:       { label: 'PROMPT CHUYỂN ĐỘNG',  dot: 'var(--amber)',  tint: 'var(--motion-tint)' },
+  continuation: { label: 'PROMPT TIẾP NỐI',     dot: 'var(--teal)',   tint: 'var(--cont-tint)' },
 };
 
 export default function PromptCard({ type = 'pose', promptData }) {
@@ -47,9 +47,9 @@ export default function PromptCard({ type = 'pose', promptData }) {
           <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', color: meta.dot }}>{meta.label}</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontSize: 10, color: 'var(--text-3)', marginRight: 2 }}>Copy:</span>
-          <CopyBtn text={en} label="EN" />
-          <CopyBtn text={vi} label="VI" />
+          <span style={{ fontSize: 10, color: 'var(--text-3)', marginRight: 2 }}>Sao chép:</span>
+          <CopyBtn text={en} label="Tiếng Anh" />
+          <CopyBtn text={vi} label="Tiếng Việt" />
         </div>
       </div>
 
@@ -59,7 +59,7 @@ export default function PromptCard({ type = 'pose', promptData }) {
         <div style={{ padding: '14px 16px', borderRight: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
             <span style={{ fontSize: 10, fontWeight: 700, padding: '1px 7px', borderRadius: 5, background: 'rgba(255,255,255,0.06)', color: 'var(--text-2)' }}>EN</span>
-            <span style={{ fontSize: 10, color: 'var(--text-3)' }}>English — dùng cho GROK</span>
+            <span style={{ fontSize: 10, color: 'var(--text-3)' }}>Tiếng Anh — dùng cho GROK</span>
           </div>
           <p style={{ fontSize: 12, lineHeight: 1.75, color: 'var(--text-1)', fontFamily: 'IBM Plex Mono, monospace', margin: 0 }}>{en}</p>
         </div>
@@ -68,7 +68,7 @@ export default function PromptCard({ type = 'pose', promptData }) {
         <div style={{ padding: '14px 16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
             <span style={{ fontSize: 10, fontWeight: 700, padding: '1px 7px', borderRadius: 5, background: 'var(--amber-dim)', color: 'var(--amber)' }}>VI</span>
-            <span style={{ fontSize: 10, color: 'var(--text-3)' }}>Tiếng Việt — tham khảo</span>
+            <span style={{ fontSize: 10, color: 'var(--text-3)' }}>Tiếng Việt — để tham khảo</span>
           </div>
           <p style={{ fontSize: 12, lineHeight: 1.75, color: 'var(--text-2)', margin: 0 }}>{vi}</p>
         </div>

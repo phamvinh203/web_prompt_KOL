@@ -42,7 +42,7 @@ export default function App() {
             ))}
           </div>
 
-          <span style={{ fontSize: 11, color: 'var(--text-3)' }}>Gemini 2.5 Flash</span>
+          <span style={{ fontSize: 11, color: 'var(--text-3)' }}>Được hỗ trợ bởi Gemini 2.5 Flash</span>
         </div>
       </header>
 

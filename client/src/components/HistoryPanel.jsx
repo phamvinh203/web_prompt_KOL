@@ -53,7 +53,9 @@ export default function HistoryPanel() {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    api.get('/history/images').then(r => setImages(r.data)).catch(() => {});
+    api.get('/history/images')
+      .then(r => setImages(Array.isArray(r.data) ? r.data : []))
+      .catch(() => {});
   }, []);
 
   async function deleteImage(id) {

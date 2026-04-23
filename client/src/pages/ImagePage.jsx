@@ -6,11 +6,62 @@ import { useImagePrompt } from '../hooks/useImagePrompt.js';
 
 const DEFAULT_STYLE = { kol_style: 'auto', mood: 'auto', setting: 'auto' };
 
+function ProgressBar({ progress, stepLabel }) {
+  const done = progress === 100;
+  return (
+    <div style={{
+      background: 'var(--bg-card)',
+      border: `1px solid ${done ? 'rgba(62,207,190,0.25)' : 'var(--border)'}`,
+      borderRadius: 14,
+      padding: '16px 20px',
+      transition: 'border-color 400ms',
+    }}>
+      {/* Labels row */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+        <span style={{ fontSize: 12, color: done ? 'var(--teal)' : 'var(--text-2)', fontWeight: 600, transition: 'color 300ms' }}>
+          {done ? '✓ Hoàn thành!' : stepLabel || 'Đang khởi động...'}
+        </span>
+        <span style={{ fontSize: 12, fontWeight: 700, color: done ? 'var(--teal)' : 'var(--accent)', fontVariantNumeric: 'tabular-nums' }}>
+          {progress}%
+        </span>
+      </div>
+
+      {/* Track */}
+      <div style={{ height: 6, borderRadius: 99, background: 'var(--bg-surface)', overflow: 'hidden' }}>
+        <div style={{
+          height: '100%',
+          borderRadius: 99,
+          width: `${progress}%`,
+          background: done
+            ? 'var(--teal)'
+            : 'linear-gradient(90deg, var(--accent), #a78bfa)',
+          transition: 'width 800ms cubic-bezier(0.4,0,0.2,1)',
+          boxShadow: done ? '0 0 8px var(--teal)' : '0 0 8px var(--accent-glow)',
+        }} />
+      </div>
+
+      {/* Step dots */}
+      <div style={{ display: 'flex', gap: 6, marginTop: 12, justifyContent: 'space-between' }}>
+        {[8, 22, 45, 68, 84, 95, 100].map((milestone) => {
+          const active = progress >= milestone;
+          return (
+            <div key={milestone} style={{
+              flex: 1, height: 2, borderRadius: 99,
+              background: active ? (done ? 'var(--teal)' : 'var(--accent)') : 'var(--bg-hover)',
+              transition: 'background 500ms',
+            }} />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function ImagePage() {
-  const [kolFile, setKolFile]     = useState(null);
-  const [productFile, setProductFile] = useState(null);
+  const [kolFile,      setKolFile]      = useState(null);
+  const [productFile,  setProductFile]  = useState(null);
   const [styleOptions, setStyleOptions] = useState(DEFAULT_STYLE);
-  const { result, loading, error, generate } = useImagePrompt();
+  const { result, loading, error, progress, stepLabel, generate } = useImagePrompt();
 
   const canGenerate = kolFile && productFile && !loading;
 
@@ -67,6 +118,13 @@ export default function ImagePage() {
             )}
           </button>
 
+          {/* Progress bar — shown while loading OR just finished */}
+          {(loading || progress > 0) && !error && (
+            <div className="slide-up">
+              <ProgressBar progress={progress} stepLabel={stepLabel} />
+            </div>
+          )}
+
           {/* Error */}
           {error && (
             <div style={{ background: 'var(--rose-dim)', border: '1px solid rgba(232,106,126,0.25)', borderRadius: 12, padding: '12px 16px', fontSize: 13, color: 'var(--rose)' }}>
@@ -92,7 +150,7 @@ export default function ImagePage() {
           <div style={{ display: 'flex', gap: 20, marginBottom: 16, paddingLeft: 4 }}>
             {[
               { color: 'var(--text-2)', label: 'EN — English prompt (dùng cho GROK)' },
-              { color: 'var(--amber)', label: 'VI — Tiếng Việt (tham khảo)' },
+              { color: 'var(--amber)',  label: 'VI — Tiếng Việt (tham khảo)' },
             ].map(({ color, label }) => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: color, display: 'inline-block' }} />

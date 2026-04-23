@@ -1,60 +1,57 @@
 import { useState } from 'react';
-import { ImageIcon, Video, Zap } from 'lucide-react';
 import ImagePage from './pages/ImagePage.jsx';
 import VideoPage from './pages/VideoPage.jsx';
 import HistoryPanel from './components/HistoryPanel.jsx';
 
 const tabs = [
-  { id: 'image', label: 'Ảnh KOL + Sản phẩm', icon: ImageIcon },
-  { id: 'video', label: 'Phân tích Video', icon: Video },
+  { id: 'image', label: 'KOL × Sản phẩm', sub: 'Ảnh → 3 Prompts' },
+  { id: 'video', label: 'Phân tích Video', sub: 'Tách đoạn → Motion' },
 ];
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('image');
 
   return (
-    <div className="min-h-screen bg-gray-950">
-      <div className="max-w-2xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center">
-            <Zap size={18} className="text-white" />
+    <div className="min-h-screen" style={{ background: 'var(--bg-base)' }}>
+      {/* Header */}
+      <header className="border-b" style={{ borderColor: 'var(--border)', background: 'rgba(17,17,25,0.8)', backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 50 }}>
+        <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm font-bold" style={{ background: 'var(--gold)', color: '#09090f' }}>K</div>
+            <span className="font-semibold text-sm tracking-tight" style={{ color: 'var(--text-1)' }}>KOL Prompt Studio</span>
+            <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: 'rgba(232,168,71,0.12)', color: 'var(--gold)' }}>GROK AI</span>
           </div>
-          <div>
-            <h1 className="text-xl font-bold text-white">KOL Prompt Generator</h1>
-            <p className="text-xs text-gray-500">Powered by Google Gemini → GROK AI</p>
-          </div>
+          <span className="text-xs" style={{ color: 'var(--text-3)' }}>Powered by Gemini 2.5 Flash</span>
+        </div>
+      </header>
+
+      <main className="max-w-3xl mx-auto px-6 py-8">
+        {/* Tab switcher */}
+        <div className="flex gap-1 p-1 rounded-2xl mb-8" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className="flex-1 py-3 px-4 rounded-xl transition-all duration-200 text-left"
+              style={activeTab === tab.id
+                ? { background: 'var(--bg-hover)', borderColor: 'var(--border-active)' }
+                : { background: 'transparent' }
+              }
+            >
+              <div className="text-sm font-semibold" style={{ color: activeTab === tab.id ? 'var(--text-1)' : 'var(--text-3)' }}>{tab.label}</div>
+              <div className="text-xs mt-0.5" style={{ color: activeTab === tab.id ? 'var(--text-2)' : 'var(--text-3)' }}>{tab.sub}</div>
+            </button>
+          ))}
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-2 mb-6 bg-white/5 rounded-xl p-1">
-          {tabs.map(tab => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all
-                  ${activeTab === tab.id
-                    ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white shadow-lg'
-                    : 'text-gray-400 hover:text-gray-200'
-                  }`}
-              >
-                <Icon size={15} />
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Content */}
-        <div className="bg-white/5 rounded-2xl border border-white/10 p-5">
+        {/* Page content */}
+        <div className="fade-in" key={activeTab}>
           {activeTab === 'image' ? <ImagePage /> : <VideoPage />}
         </div>
 
         {/* History */}
         <HistoryPanel />
-      </div>
+      </main>
     </div>
   );
 }

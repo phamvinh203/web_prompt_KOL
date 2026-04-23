@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { ScanSearch, Loader2 } from 'lucide-react';
 import VideoUploader from '../components/VideoUploader.jsx';
 import VideoSegmentList from '../components/VideoSegmentList.jsx';
 import { useVideoPrompt } from '../hooks/useVideoPrompt.js';
@@ -9,12 +8,8 @@ export default function VideoPage() {
   const [segmentDuration, setSegmentDuration] = useState(3);
   const { result, loading, error, analyze } = useVideoPrompt();
 
-  function handleAnalyze() {
-    if (videoFile) analyze(videoFile, segmentDuration);
-  }
-
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <VideoUploader
         file={videoFile}
         onFile={setVideoFile}
@@ -23,18 +18,25 @@ export default function VideoPage() {
       />
 
       <button
-        onClick={handleAnalyze}
+        onClick={() => analyze(videoFile, segmentDuration)}
         disabled={!videoFile || loading}
-        className="w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all
-          bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500
-          disabled:opacity-40 disabled:cursor-not-allowed"
+        className="btn-primary w-full py-3.5 text-sm flex items-center justify-center gap-2"
       >
-        {loading ? <Loader2 size={18} className="animate-spin" /> : <ScanSearch size={18} />}
-        {loading ? 'Đang phân tích video...' : 'Phân tích Video'}
+        {loading ? (
+          <>
+            <span className="w-4 h-4 border-2 rounded-full animate-spin" style={{ borderColor: 'rgba(0,0,0,0.2)', borderTopColor: '#09090f' }} />
+            Đang tách & phân tích...
+          </>
+        ) : (
+          <>
+            <span>⬡</span>
+            Phân tích Video
+          </>
+        )}
       </button>
 
       {error && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400">
+        <div className="rounded-xl px-4 py-3 text-sm" style={{ background: 'rgba(240,106,126,0.1)', border: '1px solid rgba(240,106,126,0.25)', color: 'var(--rose)' }}>
           {error}
         </div>
       )}

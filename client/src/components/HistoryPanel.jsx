@@ -1,30 +1,48 @@
 import { useEffect, useState } from 'react';
-import { Clock, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import api from '../utils/api.js';
 
-function ImageHistoryItem({ item, onDelete }) {
+function HistoryItem({ item, onDelete }) {
   const [open, setOpen] = useState(false);
+
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 p-3">
-      <div className="flex items-center justify-between">
-        <div className="flex-1 min-w-0 cursor-pointer" onClick={() => setOpen(!open)}>
-          <p className="text-xs text-gray-400">{new Date(item.created_at).toLocaleString('vi-VN')}</p>
-          <p className="text-sm font-medium truncate mt-0.5">{item.kol_filename} + {item.product_filename}</p>
+    <div className="rounded-2xl overflow-hidden transition-colors" style={{ border: '1px solid var(--border)', background: 'var(--bg-card)' }}>
+      <div className="flex items-center gap-3 px-4 py-3 cursor-pointer" onClick={() => setOpen(o => !o)}>
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-medium truncate" style={{ color: 'var(--text-2)' }}>
+            {item.kol_filename} × {item.product_filename}
+          </p>
+          <p className="text-xs mt-0.5 font-mono-prompt" style={{ color: 'var(--text-3)' }}>
+            {new Date(item.created_at).toLocaleString('vi-VN')}
+          </p>
         </div>
-        <div className="flex items-center gap-1 ml-2">
-          <button onClick={() => setOpen(!open)} className="p-1 text-gray-500 hover:text-gray-300">
-            {open ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={(e) => { e.stopPropagation(); onDelete(item._id); }}
+            className="text-xs px-2 py-1 rounded-lg transition-colors"
+            style={{ color: 'var(--text-3)', background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
+          >
+            ✕
           </button>
-          <button onClick={() => onDelete(item.id)} className="p-1 text-gray-500 hover:text-red-400 transition-colors">
-            <Trash2 size={14} />
-          </button>
+          <span className="text-xs" style={{ color: 'var(--text-3)', transform: open ? 'rotate(180deg)' : 'none', display: 'inline-block', transition: 'transform 150ms' }}>▼</span>
         </div>
       </div>
+
       {open && (
-        <div className="mt-3 space-y-2 text-xs text-gray-400 border-t border-white/10 pt-3">
-          <p><span className="text-purple-400 font-medium">Pose:</span> {item.pose_prompt}</p>
-          <p><span className="text-blue-400 font-medium">Motion:</span> {item.motion_prompt}</p>
-          <p><span className="text-cyan-400 font-medium">Continuation:</span> {item.continuation_prompt}</p>
+        <div className="px-4 pb-4 space-y-3 slide-up" style={{ borderTop: '1px solid var(--border)' }}>
+          {[
+            { key: 'pose_prompt', color: 'var(--gold)', label: 'POSE' },
+            { key: 'motion_prompt', color: 'var(--rose)', label: 'MOTION' },
+            { key: 'continuation_prompt', color: 'var(--cyan)', label: 'CONT.' },
+          ].map(({ key, color, label }) => {
+            const data = item[key];
+            const text = typeof data === 'object' ? data?.en || '' : data || '';
+            return (
+              <div key={key} className="pt-3">
+                <span className="text-xs font-bold" style={{ color }}>{label}</span>
+                <p className="text-xs mt-1 font-mono-prompt leading-relaxed" style={{ color: 'var(--text-3)', lineHeight: '1.6' }}>{text}</p>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -33,7 +51,6 @@ function ImageHistoryItem({ item, onDelete }) {
 
 export default function HistoryPanel() {
   const [images, setImages] = useState([]);
-  const [tab, setTab] = useState('images');
 
   useEffect(() => {
     api.get('/history/images').then(r => setImages(r.data)).catch(() => {});
@@ -44,21 +61,18 @@ export default function HistoryPanel() {
     setImages(prev => prev.filter(i => i._id !== id));
   }
 
+  if (images.length === 0) return null;
+
   return (
-    <div className="mt-8">
-      <div className="flex items-center gap-2 mb-4">
-        <Clock size={16} className="text-gray-500" />
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Lịch sử</h2>
+    <div className="mt-10">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+        <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--text-3)' }}>Lịch sử ({images.length})</span>
+        <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
       </div>
-      {images.length === 0 ? (
-        <p className="text-sm text-gray-600 text-center py-6">Chưa có lịch sử</p>
-      ) : (
-        <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
-          {images.map(item => (
-            <ImageHistoryItem key={item._id} item={item} onDelete={deleteImage} />
-          ))}
-        </div>
-      )}
+      <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
+        {images.map(item => <HistoryItem key={item._id} item={item} onDelete={deleteImage} />)}
+      </div>
     </div>
   );
 }

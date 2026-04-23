@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
-import { Upload, X } from 'lucide-react';
 
-function DropZone({ label, file, onFile, onClear }) {
+function DropZone({ label, badge, file, onFile, onClear }) {
   const inputRef = useRef();
   const [dragging, setDragging] = useState(false);
 
@@ -9,23 +8,36 @@ function DropZone({ label, file, onFile, onClear }) {
     e.preventDefault();
     setDragging(false);
     const f = e.dataTransfer.files[0];
-    if (f && f.type.startsWith('image/')) onFile(f);
+    if (f?.type.startsWith('image/')) onFile(f);
   }
 
   const preview = file ? URL.createObjectURL(file) : null;
 
   return (
-    <div className="flex-1">
-      <p className="text-xs text-gray-400 mb-2 font-medium uppercase tracking-wider">{label}</p>
+    <div className="flex-1 min-w-0">
+      <div className="flex items-center gap-2 mb-2.5">
+        <span className="text-xs font-bold px-2 py-0.5 rounded-md" style={{ background: 'rgba(232,168,71,0.1)', color: 'var(--gold)', border: '1px solid rgba(232,168,71,0.2)' }}>{badge}</span>
+        <span className="text-xs font-medium" style={{ color: 'var(--text-2)' }}>{label}</span>
+      </div>
+
       {file ? (
-        <div className="relative rounded-xl overflow-hidden border border-white/10 aspect-square">
+        <div
+          className="relative rounded-2xl overflow-hidden group"
+          style={{ aspectRatio: '3/4', border: '1px solid var(--border)' }}
+        >
           <img src={preview} alt={label} className="w-full h-full object-cover" />
-          <button
-            onClick={onClear}
-            className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 rounded-full p-1 transition-colors"
-          >
-            <X size={14} />
-          </button>
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center" style={{ background: 'rgba(9,9,15,0.7)' }}>
+            <button
+              onClick={onClear}
+              className="text-xs px-3 py-1.5 rounded-xl font-medium transition-colors"
+              style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--text-1)', border: '1px solid rgba(255,255,255,0.15)' }}
+            >
+              Xoá ảnh
+            </button>
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 px-3 py-2" style={{ background: 'linear-gradient(to top, rgba(9,9,15,0.9), transparent)' }}>
+            <p className="text-xs truncate" style={{ color: 'var(--text-2)' }}>{file.name}</p>
+          </div>
         </div>
       ) : (
         <div
@@ -33,20 +45,23 @@ function DropZone({ label, file, onFile, onClear }) {
           onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
           onDragLeave={() => setDragging(false)}
           onDrop={handleDrop}
-          className={`aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-colors
-            ${dragging ? 'border-purple-400 bg-purple-500/10' : 'border-white/20 hover:border-white/40 bg-white/5'}`}
+          className="rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all duration-200"
+          style={{
+            aspectRatio: '3/4',
+            border: `2px dashed ${dragging ? 'var(--gold)' : 'var(--border)'}`,
+            background: dragging ? 'rgba(232,168,71,0.05)' : 'var(--bg-surface)',
+          }}
         >
-          <Upload size={24} className="text-gray-500 mb-2" />
-          <span className="text-xs text-gray-500">Click or drag & drop</span>
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center mb-3" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
+            <span style={{ fontSize: '18px' }}>{badge === 'KOL' ? '👤' : '📦'}</span>
+          </div>
+          <span className="text-xs font-medium" style={{ color: 'var(--text-2)' }}>Click hoặc kéo thả</span>
+          <span className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>JPG, PNG, WEBP</span>
         </div>
       )}
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={(e) => e.target.files[0] && onFile(e.target.files[0])}
-      />
+
+      <input ref={inputRef} type="file" accept="image/*" className="hidden"
+        onChange={(e) => e.target.files[0] && onFile(e.target.files[0])} />
     </div>
   );
 }
@@ -54,8 +69,8 @@ function DropZone({ label, file, onFile, onClear }) {
 export default function ImageUploader({ kolFile, productFile, onKol, onProduct }) {
   return (
     <div className="flex gap-4">
-      <DropZone label="KOL / Model" file={kolFile} onFile={onKol} onClear={() => onKol(null)} />
-      <DropZone label="Sản phẩm" file={productFile} onFile={onProduct} onClear={() => onProduct(null)} />
+      <DropZone badge="KOL" label="Model / Influencer" file={kolFile} onFile={onKol} onClear={() => onKol(null)} />
+      <DropZone badge="SP" label="Sản phẩm" file={productFile} onFile={onProduct} onClear={() => onProduct(null)} />
     </div>
   );
 }

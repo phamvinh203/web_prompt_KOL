@@ -50,7 +50,7 @@ export default function App() {
         <div className="fade-in" key={tab}>
           {tab === 'image' ? <ImagePage /> : <VideoPage />}
         </div>
-        <HistoryPanel />
+        <HistoryPanel activeTab={tab} />
       </main>
     </div>
   );

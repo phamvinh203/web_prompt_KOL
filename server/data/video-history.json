@@ -1,0 +1,64 @@
+[
+  {
+    "_id": "b3495bc8-0718-4716-aec2-83b19b48f0b4",
+    "created_at": "2026-04-25T14:37:18.408Z",
+    "video_filename": "FSave.com_Reels_Ao-xinh-qua-mau-trang-luc-nao-cung-dep_Media_1232812918835320_002_720p.mp4",
+    "segment_duration": 3,
+    "segments": [
+      {
+        "index": 1,
+        "start": 0,
+        "end": 3,
+        "motion_prompt": "Young woman gently swaying and posing, slight hip movement, confident and playful body language, looking directly at camera with a subtle smile. Medium shot, static camera with very slow, subtle zoom-in. Soft, diffused indoor lighting, warm tones. Slow, graceful pacing, emphasizing elegance and poise. Focus on natural, fluid motion."
+      },
+      {
+        "index": 2,
+        "start": 3,
+        "end": 6,
+        "motion_prompt": "Young woman gently holding and displaying a flowing, off-white top, slight swaying motion, soft smile, confident and inviting body language. Medium shot, static camera, subtle zoom-in on the garment. Soft, diffused indoor lighting, warm tones. Slow, graceful pacing, emphasizing the fabric's drape and texture. Focus on elegant presentation and subtle movement."
+      },
+      {
+        "index": 3,
+        "start": 6,
+        "end": 9,
+        "motion_prompt": "A young woman with long dark hair, wearing a cream-colored off-the-shoulder top and matching shorts, confidently walks towards the camera with a slight hip sway, holding a small purse. She maintains eye contact and offers a subtle smile. The camera is at a medium shot, slightly low angle, performing a slow, smooth tracking shot following her movement. Soft, natural lighting illuminates the scene, creating a warm and inviting atmosphere. Pacing is slow and deliberate, emphasizing her poise and the outfit."
+      },
+      {
+        "index": 4,
+        "start": 9,
+        "end": 12,
+        "motion_prompt": "Young Asian woman, slow, graceful turn and pose, looking back over shoulder with a playful smile, slight hip sway, confident body language, walking towards camera then pausing, medium shot, subtle camera orbit, soft diffused natural lighting, warm tones, slow pacing, elegant and alluring."
+      },
+      {
+        "index": 5,
+        "start": 12,
+        "end": 15,
+        "motion_prompt": "A young woman with long dark hair pulled back walks away from the camera with a confident, slightly swaying gait. She's wearing a cream-colored, off-the-shoulder top and matching shorts. Her body language is relaxed and subtly flirtatious, glancing over her shoulder briefly. The camera follows her from a low-angle, tracking shot, maintaining a medium distance. Lighting is soft and diffused, creating a warm, inviting atmosphere. Pacing is slow and deliberate, emphasizing her movement and outfit. Focus on natural, fluid motion and a hint of playful energy."
+      },
+      {
+        "index": 6,
+        "start": 15,
+        "end": 18,
+        "motion_prompt": "Young woman, subtle swaying body movement, playful pose with hands holding rope, confident and relaxed body language, eyes closed, slight head tilt, medium shot, slow circular camera movement around subject, soft diffused lighting, warm tones, slow pacing, dreamy and ethereal atmosphere, fashion focused."
+      },
+      {
+        "index": 7,
+        "start": 18,
+        "end": 21,
+        "motion_prompt": "Young woman, slight sway and pose change, holding a cleaning tool, confident and playful body language, medium shot, slow circular camera pan, soft diffused indoor lighting, relaxed pacing, focus on natural movement and subtle expressions."
+      },
+      {
+        "index": 8,
+        "start": 21,
+        "end": 24,
+        "motion_prompt": "Young woman playfully struggling to put on an oversized, off-the-shoulder cream-colored sweater, arms outstretched and slightly flailing, smiling at the camera. Body language is lighthearted and flirtatious. Medium shot, static camera angle, slight zoom in. Soft, natural indoor lighting. Pacing is quick and energetic, mimicking the struggle and playful mood. Focus on dynamic posing and subtle body sway."
+      },
+      {
+        "index": 9,
+        "start": 24,
+        "end": 25.1,
+        "motion_prompt": "A young woman walks confidently towards the camera, slightly swaying her hips, with a playful and alluring gait. She’s wearing a loose, off-the-shoulder white top and minimal bottoms. Her hair is in a messy bun. The camera follows her from a low angle, creating a dynamic and slightly upward-looking perspective, with a slow, smooth tracking movement. Soft, natural lighting illuminates the scene, creating a warm and inviting atmosphere. Pacing is moderate, emphasizing the fluidity of her walk and the subtle details of her body language. Focus on a sensual, yet casual, vibe."
+      }
+    ]
+  }
+]

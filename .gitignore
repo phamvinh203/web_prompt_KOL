@@ -22,6 +22,8 @@ logs/
 .DS_Store
 Thumbs.db
 
+.claude
+
 # IDE
 .vscode/
 .idea/

@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { readFileSync } from 'fs';
+import { logInfo, logOk, logErr, elapsed } from '../utils/logger.js';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const MODEL = 'gemma-3-27b-it';
@@ -51,9 +52,13 @@ Prompt writing rules:
 
 const VIDEO_SEGMENT_PROMPT = (index, start, end) =>
   `Analyze this video frame extracted from segment ${index} (${start}s – ${end}s).
-Generate a GROK AI motion prompt for this segment in English.
+Generate a GROK AI motion prompt for this segment.
 Include: subject movement, body language, camera angle and movement type, lighting, pacing.
-Return ONLY the motion prompt text. No explanation, no JSON, no markdown.`;
+Return ONLY valid JSON with exactly this structure — no markdown, no explanation:
+{
+  "en": "Motion prompt in English",
+  "vi": "Motion prompt in Vietnamese (keep cinematic/technical terms in English: slow-motion, close-up, bokeh, handheld, etc.)"
+}`;
 
 const KOL_STYLES = {
   luxury:    { label: 'Luxury & High Fashion', description: 'Refined, editorial, haute couture energy. Think Vogue cover aesthetics.' },
@@ -176,10 +181,43 @@ export async function generateImagePrompts(kolImagePath, productImagePath, style
 }
 
 export async function generateVideoSegmentPrompt(framePath, index, start, end) {
-  const framePart = fileToInlinePart(framePath, 'image/jpeg');
-  const response = await ai.models.generateContent({
-    model: MODEL,
-    contents: [{ role: 'user', parts: [framePart, { text: VIDEO_SEGMENT_PROMPT(index, start, end) }] }],
-  });
-  return response.candidates[0].content.parts[0].text.trim();
+  const SCOPE = 'GEMINI';
+  logInfo(SCOPE, `Segment ${index} (${start}s–${end}s) → sending frame to ${MODEL}...`);
+  const t0 = Date.now();
+
+  try {
+    const framePart = fileToInlinePart(framePath, 'image/jpeg');
+    const response = await ai.models.generateContent({
+      model: MODEL,
+      contents: [{ role: 'user', parts: [framePart, { text: VIDEO_SEGMENT_PROMPT(index, start, end) }] }],
+    });
+
+    const candidate = response.candidates?.[0];
+
+    if (!candidate) {
+      const reason = response.promptFeedback?.blockReason ?? 'unknown';
+      logErr(SCOPE, `Segment ${index} — no candidates returned. blockReason: ${reason}`);
+      throw new Error(`Gemini returned no candidates (blockReason: ${reason})`);
+    }
+
+    if (!candidate.content) {
+      const reason = candidate.finishReason ?? 'unknown';
+      logErr(SCOPE, `Segment ${index} — candidate has no content. finishReason: ${reason}`);
+      throw new Error(`Gemini candidate has no content (finishReason: ${reason})`);
+    }
+
+    const raw = candidate.content.parts[0].text.trim();
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Gemini did not return valid JSON for video segment');
+
+    const parsed = JSON.parse(jsonMatch[0]);
+    const result = { en: parsed.en?.trim() ?? '', vi: parsed.vi?.trim() ?? '' };
+
+    const preview = (result.vi || result.en).slice(0, 80) + ((result.vi || result.en).length > 80 ? '…' : '');
+    logOk(SCOPE, `Segment ${index} done (${elapsed(t0)}) — "${preview}"`);
+    return result;
+  } catch (err) {
+    logErr(SCOPE, `Segment ${index} failed (${elapsed(t0)}) — ${err.message}`);
+    throw err;
+  }
 }

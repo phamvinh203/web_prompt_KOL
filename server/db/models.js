@@ -20,7 +20,7 @@ const videoSegmentSchema = new mongoose.Schema({
   segment_index: Number,
   start_time:    Number,
   end_time:      Number,
-  motion_prompt: String,
+  motion_prompt: { en: String, vi: String },
 }, { _id: false });
 
 const videoHistorySchema = new mongoose.Schema({

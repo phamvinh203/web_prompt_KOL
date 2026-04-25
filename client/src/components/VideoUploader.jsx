@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-export default function VideoUploader({ file, onFile, segmentDuration, onSegmentDuration }) {
+export default function VideoUploader({ file, videoUrl, onFile, segmentDuration, onSegmentDuration }) {
   const inputRef = useRef();
   const [dragging, setDragging] = useState(false);
 
@@ -14,18 +14,30 @@ export default function VideoUploader({ file, onFile, segmentDuration, onSegment
   return (
     <div className="space-y-4">
       {file ? (
-        <div className="flex items-center gap-4 rounded-2xl px-5 py-4" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(232,168,71,0.1)', border: '1px solid rgba(232,168,71,0.2)' }}>
-            <span>🎬</span>
+        <>
+          <div className="flex items-center gap-4 rounded-2xl px-5 py-4" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(232,168,71,0.1)', border: '1px solid rgba(232,168,71,0.2)' }}>
+              <span>🎬</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium truncate" style={{ color: 'var(--text-1)' }}>{file.name}</p>
+              <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>{(file.size / 1024 / 1024).toFixed(1)} MB</p>
+            </div>
+            <button onClick={() => onFile(null)} className="text-xs px-3 py-1.5 rounded-xl transition-colors" style={{ background: 'var(--bg-surface)', color: 'var(--text-3)', border: '1px solid var(--border)' }}>
+              Xoá
+            </button>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate" style={{ color: 'var(--text-1)' }}>{file.name}</p>
-            <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>{(file.size / 1024 / 1024).toFixed(1)} MB</p>
-          </div>
-          <button onClick={() => onFile(null)} className="text-xs px-3 py-1.5 rounded-xl transition-colors" style={{ background: 'var(--bg-surface)', color: 'var(--text-3)', border: '1px solid var(--border)' }}>
-            Xoá
-          </button>
-        </div>
+          {videoUrl && (
+            <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)', background: '#000' }}>
+              <video
+                src={videoUrl}
+                controls
+                preload="metadata"
+                style={{ width: '100%', maxHeight: '280px', display: 'block' }}
+              />
+            </div>
+          )}
+        </>
       ) : (
         <div
           onClick={() => inputRef.current.click()}
